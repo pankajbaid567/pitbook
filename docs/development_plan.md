@@ -42,8 +42,9 @@ Checklist style (as in cache-cluster). An item is ticked only when the exit crit
 ## Phase 6: deploy and polish
 - [x] Dockerfile (distroless, non-root), `render.yaml`, archive mirror and restore (`internal/archive`, store Worker, R2 bucket)
 - [x] Resume claims register audited against the repo (`docs/resume-claims.md`)
-- [ ] Push to GitHub (needs the owner's credentials; see the hand-off in the README of the session)
-- [ ] Render service created from the pushed repo; UI Worker deployed; cold-start check from `deploy.md`
+- [x] Pushed to GitHub; Render service `pitbook-demo` live; UI Worker live
+- [ ] Enable the object-store mirror on Render (owner sets `ARCHIVE_TOKEN`), then the cold-start and crash-button check from `deploy.md`
+- [ ] Confirm the first GitHub Actions run is green
 
 ## Future work (explicitly not v1)
 Post-only and stop orders; auctions; per-participant risk limits; replication via Raft on top of the deterministic core (a natural follow-up to cache-cluster); a binary market-data feed; expiry of old idempotency entries; a Go-vs-Rust comparison of the book; Linux `fdatasync` benchmark on NVMe.

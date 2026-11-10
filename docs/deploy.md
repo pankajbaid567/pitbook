@@ -19,26 +19,27 @@
 - **Cloudflare Workers:** free plan includes static assets and 100,000 requests/day. The mirror sends about one PUT per 10 s per symbol while the engine is awake, plus a LIST only when the file set changes.
 - **R2:** free allowance for storage and operations; the demo stores well under 10 MB (small segments, snapshots every 5,000 commands, old segments trimmed and deleted remotely).
 
-## What is already deployed (2026-11-10)
+## What is deployed (2026-11-10)
 | Piece | Where | Status |
 |---|---|---|
+| Code | `https://github.com/pankajbaid567/pitbook` (public, branch `main`) | pushed |
 | R2 bucket `pitbook-demo` | Cloudflare account | created |
 | Store Worker `pitbook-store` | `https://pitbook-store.baidpankaj567.workers.dev` | deployed; secret `STORE_TOKEN` set; tested live: 401 without or with a wrong token, 400 for keys that are not engine files, put / get / list / delete correct |
-| End-to-end recovery over the real network | local server → Worker → R2 | tested: crash button, local disk wiped, restart restored 2 files, replayed 136 commands, recovered sequence 736 after a client had seen 704 |
+| Engine API, Render service `pitbook-demo` | `https://pitbook-demo.onrender.com` (free plan, Singapore, Docker, auto-deploys on push to `main`) | **live**, `/healthz` ok, bots running. Checked from the outside: CORS only for the UI origin, WebSocket 403 for a foreign origin and 101 for the UI origin, order entry works, and the UI client logic rebuilt the live book exactly (181 frames, 0 gaps) |
+| UI Worker `pitbook` | `https://pitbook.baidpankaj567.workers.dev` | **live**, CSP restricted to the API origin |
+| Object-store mirror on Render | env `ARCHIVE_URL` + `ARCHIVE_TOKEN` | **not yet enabled** (see below) |
 
-## What remains (needs the owner)
-Render deploys from a Git repository, so the code must be on GitHub first. The deployment tooling used here has no GitHub credentials (and must not go looking for them), so these two steps are yours:
+End-to-end recovery over the real network was tested locally against the real Worker and R2: crash button, local disk wiped, restart restored 2 files, replayed 136 commands, recovered sequence 736 after a client had seen 704.
+
+## Enabling the mirror on Render (one step for the owner)
+Until `ARCHIVE_URL` and `ARCHIVE_TOKEN` are set on the Render service, the hosted engine runs normally but a restart (including the crash button) starts from an empty book, because Render's free disk is ephemeral. The token is a secret, so it is set by the owner in the Render dashboard (Environment) and not through tooling:
 ```bash
-# 1. create an empty repo, e.g. github.com/pankajbaid567/pitbook (web UI), then:
-cd /Users/pankajbaid/projects/flagships/Pitbook
-git remote add origin https://github.com/pankajbaid567/pitbook.git
-git push -u origin main
+grep '^ARCHIVE_TOKEN=' ~/.pitbook-prod.env | cut -d= -f2 | tr -d '\n' | pbcopy   # copies it without printing
 ```
-After the push, the remaining steps are mechanical and were prepared:
-1. **Render:** new web service from the repo, runtime `docker`, `dockerfilePath ./deploy/Dockerfile`, plan `free`, health check `/healthz`, environment `ALLOWED_ORIGIN=https://pitbook.baidpankaj567.workers.dev`, `ARCHIVE_URL=https://pitbook-store.baidpankaj567.workers.dev`, `ARCHIVE_TOKEN=<value of ARCHIVE_TOKEN in ~/.pitbook-prod.env>` (never commit it; `deploy/.env.example` lists names only). `deploy/render.yaml` is the same as a blueprint.
-2. **UI Worker:** `cd web && VITE_API_URL=https://<render-url> npm run build && cd ../deploy/worker-ui && npx wrangler deploy`.
-3. **Cold-start check:** wait 20 minutes, open the UI: the recorded session plays immediately with the "waking" banner, then the live feed takes over when `/healthz` returns 200. Press the crash button and confirm the verdict panel shows "Nothing you saw was lost".
-4. Update `docs/resume-claims.md` row 12 from pending to proven with the URL and date.
+Add `ARCHIVE_TOKEN` (paste) and `ARCHIVE_URL=https://pitbook-store.baidpankaj567.workers.dev` as two environment variables and save (one redeploy). Both must be set together: a server with `ARCHIVE_URL` and no token refuses to start.
+
+## Cold-start check (after enabling the mirror)
+Wait about 20 minutes so the free instance sleeps, open the UI: the recorded session plays immediately with the "waking" banner, then the live feed takes over. Press **Kill the engine** and confirm the verdict reads "Nothing you saw was lost".
 
 ## Secrets
 - `ARCHIVE_TOKEN` / `STORE_TOKEN`: one shared random secret (32 bytes hex), stored in `~/.pitbook-prod.env` (mode 600) and as a Worker secret and a Render environment variable. Rotate by generating a new value, `wrangler secret put STORE_TOKEN`, and updating Render. The bucket holds only synthetic demo data.

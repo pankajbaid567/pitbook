@@ -2,6 +2,8 @@
 
 **A crash-safe matching engine and live order book, in Go.**
 
+**Live demo: https://pitbook.baidpankaj567.workers.dev** · engine API: https://pitbook-demo.onrender.com (free tier: the first request after idle can take about a minute; the page plays a recorded session meanwhile)
+
 A price-time-priority matching engine you can watch trade in the browser, kill with `SIGKILL`, and bring back with the same book. Event-sourced, deterministic, and built to run on free tiers (Render + Cloudflare).
 
 ## What is verified

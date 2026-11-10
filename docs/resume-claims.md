@@ -15,8 +15,8 @@ A claim may go on a resume only when its row says **proven**, with the command t
 | 9 | A 1,000,000-command log recovers in **0.32 s** (0.26 s from a mid-log snapshot) | `make bench` (recovery step) | `bench/results/loadgen-*-recovery.csv` | **proven** |
 | 10 | A client that rebuilds its book from SNAPSHOT + contiguous frames ends with exactly the server's book; slow consumers are resynced without slowing the engine | `go test ./internal/gateway`, `node --experimental-websocket web/scripts/e2e.mjs <url>` | test output | **proven** |
 | 11 | A wiped disk recovers identical state from object storage (unit test, and live against the real Worker + R2 on 2026-11-10: recovered seq 736 after a client had seen 704) | `go test ./internal/archive` | test output; deployment record in `docs/deploy.md` | **proven** |
-| 12 | Live demo on Cloudflare Workers + Render free tier | open the link while Render is cold | `docs/deploy.md` | **pending** (needs the GitHub push; see `deploy.md`) |
-| 13 | GitHub Actions CI | push to GitHub | `.github/workflows/ci.yml` | **pending** (runs only after the push) |
+| 12 | Live demo on Cloudflare Workers + Render free tier: https://pitbook.baidpankaj567.workers.dev (checked 2026-11-10: live feed, order entry, CORS and origin checks) | open the link | `docs/deploy.md` | **proven** for the live demo; the crash-recovery button on the hosted instance is **pending** until the object-store mirror env vars are set |
+| 13 | GitHub Actions CI | push to GitHub | `.github/workflows/ci.yml` | **pending** (check the Actions tab of the pushed repo; not yet observed) |
 
 ## What not to claim
 - "Fault tolerant", "highly available", "exchange-grade", "production", "zero downtime". Say **simulator**, **process crash**, **single node**.
