@@ -1,0 +1,26 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - run: make fmt
+      - run: go vet ./...
+      - run: go test -race -count=1 ./...
+      - run: make build
+      - name: crash test (smoke)
+        run: ./bin/crashtest -bin bin/pitbook -runs 25 -parallel 2
+      - name: injected bugs must be caught
+        run: ./scripts/mutation_check.sh
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: cd web && npm ci && npm run build

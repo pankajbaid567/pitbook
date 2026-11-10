@@ -1,0 +1,14 @@
+bin/
+dist/
+node_modules/
+*.log
+*.wal
+*.snap
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage.out
+/data/
+bench/results/*.tmp
+tsconfig.tsbuildinfo

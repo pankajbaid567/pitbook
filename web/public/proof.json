@@ -1,0 +1,26 @@
+{
+  "generated": "2026-11-10",
+  "machine": "Apple M3 laptop, 8 GiB, darwin/arm64",
+  "crash": {
+    "runs": 1000,
+    "failed": 0,
+    "acked": 117609,
+    "fills": 41176,
+    "retried": 3428,
+    "in_flight": 4000,
+    "date": "2026-11-10"
+  },
+  "property": {
+    "commands": 1000000,
+    "mutations_caught": 5
+  },
+  "bench": {
+    "engine_saturation": 669824,
+    "wal_sync_saturation": 80666,
+    "engine_p99_us": 10485.8,
+    "engine_rate": 100000,
+    "wal_sync_p99_ms": 9.9615,
+    "wal_sync_rate": 10000,
+    "recovery_1m_ms": 316.0
+  }
+}

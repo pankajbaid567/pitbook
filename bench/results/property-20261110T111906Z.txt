@@ -1,0 +1,4 @@
+    property_test.go:116: commands=1000000 fills=382819 self-trade-cancels=118607 fok-rejects=55099 avg-resting=6600
+--- PASS: TestPropertyEngineEqualsReference (89.15s)
+PASS
+ok  	pitbook/internal/book	89.296s

@@ -1,0 +1,6 @@
+self-trade prevention disabled: killed
+crossing test off by one (< instead of <=): killed
+FOK ignores self-trade blocking: killed
+replace keeps priority when size grows: killed
+market orders rest instead of cancelling: killed
+mutations killed: 5 of 5

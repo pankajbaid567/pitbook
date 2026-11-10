@@ -1,0 +1,18 @@
+# Render blueprint. No secrets here: set them in the dashboard (or via the Render MCP).
+services:
+  - type: web
+    name: pitbook-demo
+    runtime: docker
+    dockerfilePath: ./deploy/Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: ALLOWED_ORIGIN      # the UI origin, e.g. https://pitbook.<account>.workers.dev
+        sync: false
+      - key: ARCHIVE_URL        # the store Worker, e.g. https://pitbook-store.<account>.workers.dev
+        sync: false
+      - key: ARCHIVE_TOKEN      # same value as the Worker's STORE_TOKEN secret
+        sync: false

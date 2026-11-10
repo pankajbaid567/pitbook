@@ -1,0 +1,7 @@
+pkg: pitbook/internal/book
+BenchmarkSteadyMix-8   	36043401	       136.1 ns/op	      43 B/op	       0 allocs/op
+BenchmarkSteadyMix-8   	35963840	       138.3 ns/op	      43 B/op	       0 allocs/op
+BenchmarkSteadyMix-8   	35965458	       136.3 ns/op	      43 B/op	       0 allocs/op
+BenchmarkSteadyMix-8   	36126744	       138.7 ns/op	      43 B/op	       0 allocs/op
+BenchmarkSteadyMix-8   	35653197	       137.0 ns/op	      43 B/op	       0 allocs/op
+ok  	pitbook/internal/book	25.892s
