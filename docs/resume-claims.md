@@ -16,7 +16,7 @@ A claim may go on a resume only when its row says **proven**, with the command t
 | 10 | A client that rebuilds its book from SNAPSHOT + contiguous frames ends with exactly the server's book; slow consumers are resynced without slowing the engine | `go test ./internal/gateway`, `node --experimental-websocket web/scripts/e2e.mjs <url>` | test output | **proven** |
 | 11 | A wiped disk recovers identical state from object storage (unit test, and live against the real Worker + R2 on 2026-11-10: recovered seq 736 after a client had seen 704) | `go test ./internal/archive` | test output; deployment record in `docs/deploy.md` | **proven** |
 | 12 | Live demo on Cloudflare Workers + Render free tier: https://pitbook.baidpankaj567.workers.dev (checked 2026-11-10: live feed, order entry, CORS and origin checks) | open the link | `docs/deploy.md` | **proven** for the live demo; the crash-recovery button on the hosted instance is **pending** until the object-store mirror env vars are set |
-| 13 | GitHub Actions CI | push to GitHub | `.github/workflows/ci.yml` | **pending** (check the Actions tab of the pushed repo; not yet observed) |
+| 13 | GitHub Actions CI | push to GitHub | `.github/workflows/ci.yml` | **proven**: runs 42811508188 and 42811857113 green on 2026-11-10 (gofmt, vet, `-race` tests, 25-run crash smoke, mutation check, UI build on Linux) |
 
 ## What not to claim
 - "Fault tolerant", "highly available", "exchange-grade", "production", "zero downtime". Say **simulator**, **process crash**, **single node**.

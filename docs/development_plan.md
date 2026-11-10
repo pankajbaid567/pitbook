@@ -44,7 +44,7 @@ Checklist style (as in cache-cluster). An item is ticked only when the exit crit
 - [x] Resume claims register audited against the repo (`docs/resume-claims.md`)
 - [x] Pushed to GitHub; Render service `pitbook-demo` live; UI Worker live
 - [ ] Enable the object-store mirror on Render (owner sets `ARCHIVE_TOKEN`), then the cold-start and crash-button check from `deploy.md`
-- [ ] Confirm the first GitHub Actions run is green
+- [x] First GitHub Actions runs green (Linux: tests with the race detector, crash-test smoke, mutation check, UI build)
 
 ## Future work (explicitly not v1)
 Post-only and stop orders; auctions; per-participant risk limits; replication via Raft on top of the deterministic core (a natural follow-up to cache-cluster); a binary market-data feed; expiry of old idempotency entries; a Go-vs-Rust comparison of the book; Linux `fdatasync` benchmark on NVMe.
